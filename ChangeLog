@@ -1,5 +1,9 @@
 JustdoInc modifications log:
 
+2016.07.24, Version justdoinc-mod-v1.0.9.2
+
+* Issue with package.js fixed
+
 2016.07.24, Version justdoinc-mod-v1.0.9.1
 
 * Package renamed to justdoinc:analytics.
