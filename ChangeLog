@@ -1,0 +1,11 @@
+JustdoInc modifications log:
+
+2016.07.24, Version justdoinc-mod-v1.0.9.1
+
+* Package renamed to justdoinc:analytics.
+* Some init code related to FlowRouter which isn't required by
+JustdoInc's projects had been commented out.
+* InitAnalytics reads its settings from an argument instead
+of Meteor.settings.
+* Initiation procedures are now triggered by a new function InitAnalytics which is exported by the package
+* Forked from https://github.com/okgrow/analytics/tree/v1.0.9

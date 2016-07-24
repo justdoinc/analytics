@@ -1,6 +1,5 @@
-// TODO Refactor to export this as a handy helper when Meteor 1.3 imports/exports are used.
-var SETTINGS = Meteor.settings && Meteor.settings.public &&
-               Meteor.settings.public.analyticsSettings || {};
+// var SETTINGS = Meteor.settings && Meteor.settings.public &&
+//                Meteor.settings.public.analyticsSettings || {};
 
 // analytics.js might not have loaded it's integrations by the time we start
 // tracking events, page views and identifies.
@@ -80,45 +79,45 @@ var trackLogins = function () {
 };
 
 var _IronRouter = (Package['iron:router'] && Package['iron:router'].Router);
-var _FlowRouter = (Package['kadira:flow-router'] && Package['kadira:flow-router'].FlowRouter) ||
-                  (Package['meteorhacks:flow-router'] && Package['meteorhacks:flow-router'].FlowRouter) ||
-                  (Package['kadira:flow-router-ssr'] && Package['kadira:flow-router-ssr'].FlowRouter) ||
-                  (Package['meteorhacks:flow-router-ssr'] && Package['meteorhacks:flow-router-ssr'].FlowRouter);
-
-if (_FlowRouter && SETTINGS.autorun !== false) {
-  // something context & context.context don't exist, see: #93
-  _FlowRouter.triggers.enter([function(context) {
-    var page = {};
-
-    if (context.path) {
-      page.path = context.path;
-    }
-    if (context.context && context.context.title) {
-      page.title = context.context.title;
-    }
-
-    page.url = window.location.origin + page.path;
-
-    if (context.route && context.route.name) {
-      page.name = context.route.name;
-    } else {
-      page.name = page.path;
-    }
-    if (context.context && context.context.querystring) {
-      page.search = "?" + context.context.querystring;
-    } else {
-      page.search = "";
-    }
-    if (_FlowRouter.lastRoutePath) {
-      page.referrer = window.location.origin + _FlowRouter.lastRoutePath;
-    } else {
-      page.referrer = document.referrer;
-    }
-    _FlowRouter.lastRoutePath = page.path;
-
-    trackPageWhenReady(page.name, page);
-  }]);
-}
+// var _FlowRouter = (Package['kadira:flow-router'] && Package['kadira:flow-router'].FlowRouter) ||
+//                   (Package['meteorhacks:flow-router'] && Package['meteorhacks:flow-router'].FlowRouter) ||
+//                   (Package['kadira:flow-router-ssr'] && Package['kadira:flow-router-ssr'].FlowRouter) ||
+//                   (Package['meteorhacks:flow-router-ssr'] && Package['meteorhacks:flow-router-ssr'].FlowRouter);
+// 
+// if (_FlowRouter && SETTINGS.autorun !== false) {
+//   // something context & context.context don't exist, see: #93
+//   _FlowRouter.triggers.enter([function(context) {
+//     var page = {};
+// 
+//     if (context.path) {
+//       page.path = context.path;
+//     }
+//     if (context.context && context.context.title) {
+//       page.title = context.context.title;
+//     }
+// 
+//     page.url = window.location.origin + page.path;
+// 
+//     if (context.route && context.route.name) {
+//       page.name = context.route.name;
+//     } else {
+//       page.name = page.path;
+//     }
+//     if (context.context && context.context.querystring) {
+//       page.search = "?" + context.context.querystring;
+//     } else {
+//       page.search = "";
+//     }
+//     if (_FlowRouter.lastRoutePath) {
+//       page.referrer = window.location.origin + _FlowRouter.lastRoutePath;
+//     } else {
+//       page.referrer = document.referrer;
+//     }
+//     _FlowRouter.lastRoutePath = page.path;
+// 
+//     trackPageWhenReady(page.name, page);
+//   }]);
+// }
 
 initIronRouter = function() {
   if (_IronRouter) {
@@ -131,14 +130,14 @@ initIronRouter = function() {
 }
 
 var userEmail;
-Meteor.startup(function () {
-  if (!_.isEmpty(SETTINGS)) {
-    if (SETTINGS.autorun !== false) {
+InitAnalytics = function (settings) {
+  if (!_.isEmpty(settings)) {
+    if (settings.autorun !== false) {
       initIronRouter();
     }
-    analytics.initialize(SETTINGS);
+    analytics.initialize(settings);
   } else {
-    console.error("Missing analyticsSettings in Meteor.settings.public");
+    console.error("InitAnalytics: invlaid settings object provided");
   }
 
   if (Package['accounts-base']) {
@@ -147,4 +146,4 @@ Meteor.startup(function () {
     });
     Tracker.autorun(trackLogins);
   }
-});
+}
