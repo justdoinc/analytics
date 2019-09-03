@@ -15,7 +15,6 @@ Package.onUse(function(api) {
   // and constrain their versions IF another package, or app brings them in
   api.use('iron:router@1.0.7', 'client', {weak: true});
   api.use('meteorhacks:flow-router@1.17.2', 'client', {weak: true});
-  api.use('kadira:flow-router@2.6.0', 'client', {weak: true});
 
   api.addFiles([
     'server/browser-policy.js',
