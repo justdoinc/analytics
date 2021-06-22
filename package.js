@@ -26,5 +26,9 @@ Package.onUse(function(api) {
     'client/meteor-analytics.js',
   ], 'client');
 
-  api.export('InitAnalytics', 'client');
+  // Do not export InitAnalytics to allow first tick to load properly if the analytics plugin is blocked by ad blockers #10727
+  // If we export something Meteor tries to access it on the first tick, and if the plugin is blocked, the app
+  // will collapse due to exception in the first tick.
+  // That's why we bind to window.InitAnalytics.
+  // api.export('InitAnalytics', 'client'); 
 });
